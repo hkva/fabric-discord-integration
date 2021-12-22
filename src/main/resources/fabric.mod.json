@@ -1,0 +1,36 @@
+{
+    "schemaVersion": 1,
+    "id": "discord",
+    "version": "${version}",
+
+    "name": "Discord Integration",
+    "description": "Bidirectional Discord Chat Integration",
+    "authors": [
+        "ChunkAligned"
+    ],
+    "contact": {
+        "homepage": "https://github.com/chunkaligned",
+        "sources": "https://github.com/chunkaligned/fabric-discord-integration"
+    },
+
+    "license": "CC0-1.0",
+
+    "environment": "*",
+    "entrypoints": {
+        "server": [
+            "net.hkva.discord.DiscordIntegrationMod"
+        ]
+    },
+    "mixins": [
+        "discord.mixins.json"
+    ],
+
+    "depends": {
+        "fabricloader": ">=0.11.3",
+        "fabric": "*",
+        "minecraft": "1.18.x",
+        "java": ">=17"
+    },
+    "suggests": {
+    }
+}
