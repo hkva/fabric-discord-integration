@@ -10,14 +10,14 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.hkva.discord.callback.DiscordChatCallback;
 import net.hkva.discord.callback.ServerChatCallback;
-import net.minecraft.network.MessageType;
+import net.minecraft.network.message.MessageType;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.HoverEvent;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.LiteralTextContent;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -230,17 +230,17 @@ public class DiscordIntegrationMod implements DedicatedServerModInitializer {
         }
         
         // Build incoming message
-        LiteralText text = new LiteralText(String.format("[%s#%s] ", author.getName(), author.getDiscriminator()));
+        LiteralTextContent text = new LiteralTextContent(String.format("[%s#%s] ", author.getName(), author.getDiscriminator()));
 
         // Embed attachments as clickable text
         for (Message.Attachment attachment : message.getAttachments()) {
-            final MutableText attachmentText = new LiteralText(attachment.getFileName());
+            final MutableText attachmentText = new LiteralTextContent(attachment.getFileName());
             attachmentText.setStyle(
                 attachmentText.getStyle()
                     .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, attachment.getUrl()))
                     .withFormatting(Formatting.GREEN)
                     .withFormatting(Formatting.UNDERLINE)
-                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new LiteralText("Click to open in your web browser")))
+                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new LiteralTextContent("Click to open in your web browser")))
             );
             text.append(attachmentText).append(" ");
         }
@@ -278,7 +278,7 @@ public class DiscordIntegrationMod implements DedicatedServerModInitializer {
             writeConfig();
         }
 
-        context.getSource().sendFeedback(new LiteralText(response), true);
+        context.getSource().sendFeedback(new LiteralTextContent(response), true);
         return 0;
     }
 
@@ -288,11 +288,11 @@ public class DiscordIntegrationMod implements DedicatedServerModInitializer {
     private static int commandStatus(CommandContext<ServerCommandSource> context) {
         final ServerCommandSource source = context.getSource();
         if (!bot.isConnected()) {
-            source.sendFeedback(new LiteralText("Discord: Not connected"), false);
+            source.sendFeedback(new LiteralTextContent("Discord: Not connected"), false);
         } else {
             bot.withConnection(c -> {
-                source.sendFeedback(new LiteralText("Discord: Connected"), false);
-                source.sendFeedback(new LiteralText("Status: " + c.getStatus()), false);
+                source.sendFeedback(new LiteralTextContent("Discord: Connected"), false);
+                source.sendFeedback(new LiteralTextContent("Status: " + c.getStatus()), false);
             });
         }
 
@@ -305,12 +305,12 @@ public class DiscordIntegrationMod implements DedicatedServerModInitializer {
     private static int commandReconnect(CommandContext<ServerCommandSource> context) {
         final ServerCommandSource source = context.getSource();
         bot.disconnect();
-        source.sendFeedback(new LiteralText("Discord: Disconnected"), true);
+        source.sendFeedback(new LiteralTextContent("Discord: Disconnected"), true);
         try {
             bot.connect(config.token);
-            source.sendFeedback(new LiteralText("Discord: Connected"), true);
+            source.sendFeedback(new LiteralTextContent("Discord: Connected"), true);
         } catch (LoginException | InterruptedException e) {
-            source.sendFeedback(new LiteralText("Discord: Failed to connect"), true);
+            source.sendFeedback(new LiteralTextContent("Discord: Failed to connect"), true);
         }
 
         return 0;

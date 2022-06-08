@@ -1,7 +1,7 @@
 package net.hkva.discord.mixin;
 
 import net.hkva.discord.callback.ServerChatCallback;
-import net.minecraft.network.MessageType;
+import net.minecraft.network.message.MessageType;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ServerPlayerEntity;
