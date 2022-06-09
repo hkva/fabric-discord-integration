@@ -14,6 +14,8 @@
 
 ## Installing
 
+[Download the latest version here](https://github.com/chunkaligned/fabric-discord-integration/releases)
+
 1. Install the [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api/files) on the dedicated server
 2. Install `fabric-discord-integration-x.x.x.jar`
 3. Launch the server
