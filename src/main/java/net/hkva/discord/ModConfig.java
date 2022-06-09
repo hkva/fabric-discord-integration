@@ -17,4 +17,13 @@ public class ModConfig {
 
     // Disable mentions from Minecraft chat
     public boolean disableMentions = true;
+    
+    // Discord message format
+    public String discordMessageFormat = "[$NAME] $MESSAGE";
+    
+    // Game message format
+    public String chatMessageFormat = "**<$NAME>** $MESSAGE";
+    
+    // System message format
+    public String systemMessageFormat = "**$MESSAGE**";
 }

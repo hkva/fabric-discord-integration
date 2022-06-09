@@ -9,7 +9,8 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.hkva.discord.callback.DiscordChatCallback;
-import net.hkva.discord.callback.ServerChatCallback;
+import net.hkva.discord.callback.ServerMessageCallback;
+import net.hkva.discord.callback.ChatMessageCallback;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.network.message.MessageSender;
 import net.minecraft.network.message.MessageType;
@@ -36,7 +37,6 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.vdurmont.emoji.EmojiParser;
 
-import net.minecraft.util.registry.RegistryKey;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -89,12 +89,20 @@ public class DiscordIntegrationMod implements DedicatedServerModInitializer {
         // Unique message sender
         serverSender = new MessageSender(UUID.randomUUID(), Text.of("Server"), null);
 
+        // Core server events
         ServerLifecycleEvents.SERVER_STARTED.register(DiscordIntegrationMod::onServerStart);
         ServerLifecycleEvents.SERVER_STOPPED.register(DiscordIntegrationMod::onServerStop);
         ServerTickEvents.END_WORLD_TICK.register(DiscordIntegrationMod::onServerTick);
-        ServerChatCallback.EVENT.register(DiscordIntegrationMod::onServerChat);
-        DiscordChatCallback.EVENT.register(DiscordIntegrationMod::onDiscordChat);
+        // Command events
         CommandRegistrationCallback.EVENT.register(DiscordIntegrationMod::onRegisterCommands);
+        // Game chat events
+        ChatMessageCallback.EVENT.register(DiscordIntegrationMod::onServerChat);
+        ServerMessageCallback.EVENT.register(DiscordIntegrationMod::onServerMessage);
+        // Discord chat events
+        DiscordChatCallback.EVENT.register(DiscordIntegrationMod::onDiscordChat);
+        
+        
+        
     }
 
     //
@@ -129,6 +137,37 @@ public class DiscordIntegrationMod implements DedicatedServerModInitializer {
             action.accept(server.get());
         }
     }
+    
+    //
+    // Relay a message to Discord
+    //
+    public static void relayToDiscord(String message) {
+        bot.withConnection(c -> {
+            String outgoing = message;
+            for (Long channelID : config.relayChannelIDs) {
+                final TextChannel channel = c.getTextChannelById(channelID);
+                if (channel == null || !channel.canTalk()) {
+                    LOGGER.warn("Relay channel " + channelID + " is invalid");
+                    continue;
+                }
+
+                // Block mentions
+                if (config.disableMentions) {
+                    outgoing = outgoing.replaceAll("@", "@ ");
+                }
+
+                // Format guild emojis
+                for (Emote emote : channel.getGuild().getEmotes()) {
+                    final String emojiDisplay = String.format(":%s:", emote.getName());
+                    final String emojiFormatted = String.format("<%s%s>", emojiDisplay, emote.getId());
+
+                    outgoing = outgoing.replaceAll(emojiDisplay, emojiFormatted);
+                }
+
+                channel.sendMessage(outgoing).queue();
+            }
+        });
+    }
 
     //
     // Called on server start
@@ -159,44 +198,31 @@ public class DiscordIntegrationMod implements DedicatedServerModInitializer {
             }
         }
     }
+    
+    //
+    // Called on game server message
+    //
+    private static void onServerMessage(MinecraftServer server, Text text) {
+        // Format system message
+        String formatted = config.systemMessageFormat.replaceAll("\\$MESSAGE", text.getString());
+        // Relay
+        relayToDiscord(formatted);
+    }
 
     //
-    // Called on server message
+    // Called on game chat message
     //
-    private static void onServerChat(MinecraftServer server, Text text, RegistryKey<MessageType> type, UUID senderUUID) {
+    private static void onServerChat(MinecraftServer server, Text text, MessageSender sender) {
         // Ignore feedback
-        if (senderUUID == DiscordIntegrationMod.serverSender.uuid()) {
+        if (sender.uuid() == DiscordIntegrationMod.serverSender.uuid()) {
             return;
         }
 
+        // Format chat message
+        String formatted = config.chatMessageFormat.replaceAll("\\$NAME", sender.name().getString());
+        formatted = formatted.replaceAll("\\$MESSAGE", text.getString());
         // Relay
-        bot.withConnection(c -> {
-            for (Long channelID : config.relayChannelIDs) {
-                final TextChannel channel = c.getTextChannelById(channelID);
-                if (channel == null || !channel.canTalk()) {
-                    LOGGER.warn("Relay channel " + channelID + " is invalid");
-                    continue;
-                }
-
-                // Format outgoing message
-                String messageFormatted = text.getString();
-
-                // Block mentions
-                if (config.disableMentions) {
-                    messageFormatted = messageFormatted.replaceAll("@", "@ ");
-                }
-
-                // Format guild emojis
-                for (Emote emote : channel.getGuild().getEmotes()) {
-                    final String emojiDisplay = String.format(":%s:", emote.getName());
-                    final String emojiFormatted = String.format("<%s%s>", emojiDisplay, emote.getId());
-
-                    messageFormatted = messageFormatted.replaceAll(emojiDisplay, emojiFormatted);
-                }
-
-                channel.sendMessage(messageFormatted).queue();
-            }
-        });
+        relayToDiscord(formatted);        
     }
 
     //
@@ -238,7 +264,15 @@ public class DiscordIntegrationMod implements DedicatedServerModInitializer {
         }
         
         // Build incoming message
-        MutableText text = Text.literal(String.format("[%s#%s] ", author.getName(), author.getDiscriminator()));
+        String name = String.format("%s#%s", author.getName(), author.getDiscriminator());
+        String formatted = config.discordMessageFormat.replaceAll("\\$NAME", name);
+        String content = EmojiParser.parseToAliases(message.getContentDisplay());
+        // Pad extra space for attachment names if not already empty
+        if (content.length() > 0) {
+            content += " ";
+        }
+        formatted = formatted.replaceAll("\\$MESSAGE", content);
+        MutableText text = Text.literal(formatted);
 
         // Embed attachments as clickable text
         for (Message.Attachment attachment : message.getAttachments()) {
@@ -252,9 +286,6 @@ public class DiscordIntegrationMod implements DedicatedServerModInitializer {
             );
             text.append(attachmentText).append(" ");
         }
-        
-        // Append message content
-        text.append(EmojiParser.parseToAliases(message.getContentDisplay()));
 
         // Forward message to all clients
         server.get().getPlayerManager().broadcast(SignedMessage.of(text), DiscordIntegrationMod.serverSender, MessageType.SYSTEM);
