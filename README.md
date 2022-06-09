@@ -1,6 +1,6 @@
 # Fabric Discord Integration ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/chunkaligned/fabric-discord-integration/build?style=flat-square)
 
-![image](https://user-images.githubusercontent.com/91440203/146874212-58ca9094-ceeb-4a93-8b38-aad17fdd0ce5.png)
+![image](https://user-images.githubusercontent.com/91440203/172745735-47e3396e-e84c-42c5-a29e-d24a0d8db3e6.png)
 
 
 ## Building
