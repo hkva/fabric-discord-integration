@@ -5,11 +5,12 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.fabricmc.api.DedicatedServerModInitializer;
-import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.hkva.discord.callback.DiscordChatCallback;
 import net.hkva.discord.callback.ServerChatCallback;
+import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.network.message.MessageSender;
 import net.minecraft.network.message.MessageType;
 import net.minecraft.network.message.SignedMessage;
@@ -264,7 +265,7 @@ public class DiscordIntegrationMod implements DedicatedServerModInitializer {
     //
     // Called when registering commands
     //
-    private static void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher, boolean dedicated) {
+    private static void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess reg, CommandManager.RegistrationEnvironment env) {
         dispatcher.register(CommandManager.literal("discord")
             .requires(source -> source.hasPermissionLevel(4))
             .then(CommandManager.literal("loadConfig").executes(DiscordIntegrationMod::commandLoadConfig))

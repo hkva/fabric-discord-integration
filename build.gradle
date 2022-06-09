@@ -31,9 +31,6 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	// Use deprecated API for the time being
-	modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
-
 	// JDA v4.4.0 (LTS)
 	// https://github.com/DV8FromTheWorld/JDA/releases/tag/v4.4.0
 	include(implementation("net.dv8tion:JDA:4.4.0_350")) {
