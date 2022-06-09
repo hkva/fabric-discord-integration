@@ -2,6 +2,11 @@
 
 ![image](https://user-images.githubusercontent.com/91440203/172745735-47e3396e-e84c-42c5-a29e-d24a0d8db3e6.png)
 
+## Notable features:
+* Scoreboard integration
+* Attachment support
+* Remote server console access for admins
+* Emoji support, including custom emoji
 
 ## Building
 
@@ -12,7 +17,7 @@
 1. Install the [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api/files) on the dedicated server
 2. Install `fabric-discord-integration-x.x.x.jar`
 3. Launch the server
-4. Fill out `config/discord.json`
+4. Configure `config/discord.json`
 5. Run `/discord loadConfig`, then `/discord reconnect`
 
 ## Discord Commands
@@ -27,4 +32,8 @@
 
 ## Contributing
 
-All contributions are welcome. If you want to suggest a feature, please create an issue and it'll probably get added.
+All contributions are welcome. If you want to suggest a feature, [create an issue](https://github.com/chunkaligned/fabric-discord-integration/issues/new/choose) and it'll probably get added.
+
+## License
+
+[MIT](/LICENSE)
