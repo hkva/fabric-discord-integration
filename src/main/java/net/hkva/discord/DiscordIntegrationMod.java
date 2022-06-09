@@ -230,17 +230,17 @@ public class DiscordIntegrationMod implements DedicatedServerModInitializer {
         }
         
         // Build incoming message
-        LiteralTextContent text = new LiteralTextContent(String.format("[%s#%s] ", author.getName(), author.getDiscriminator()));
+        MutableText text = Text.literal(String.format("[%s#%s] ", author.getName(), author.getDiscriminator()));
 
         // Embed attachments as clickable text
         for (Message.Attachment attachment : message.getAttachments()) {
-            final MutableText attachmentText = new LiteralTextContent(attachment.getFileName());
+            final MutableText attachmentText = Text.literal(attachment.getFileName());
             attachmentText.setStyle(
                 attachmentText.getStyle()
                     .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, attachment.getUrl()))
                     .withFormatting(Formatting.GREEN)
                     .withFormatting(Formatting.UNDERLINE)
-                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new LiteralTextContent("Click to open in your web browser")))
+                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.of("Click to open in your web browser")))
             );
             text.append(attachmentText).append(" ");
         }
@@ -278,7 +278,7 @@ public class DiscordIntegrationMod implements DedicatedServerModInitializer {
             writeConfig();
         }
 
-        context.getSource().sendFeedback(new LiteralTextContent(response), true);
+        context.getSource().sendFeedback(Text.of(response), true);
         return 0;
     }
 
@@ -288,11 +288,11 @@ public class DiscordIntegrationMod implements DedicatedServerModInitializer {
     private static int commandStatus(CommandContext<ServerCommandSource> context) {
         final ServerCommandSource source = context.getSource();
         if (!bot.isConnected()) {
-            source.sendFeedback(new LiteralTextContent("Discord: Not connected"), false);
+            source.sendFeedback(Text.of("Discord: Not connected"), false);
         } else {
             bot.withConnection(c -> {
-                source.sendFeedback(new LiteralTextContent("Discord: Connected"), false);
-                source.sendFeedback(new LiteralTextContent("Status: " + c.getStatus()), false);
+                source.sendFeedback(Text.of("Discord: Connected"), false);
+                source.sendFeedback(Text.of("Status: " + c.getStatus()), false);
             });
         }
 
@@ -305,12 +305,12 @@ public class DiscordIntegrationMod implements DedicatedServerModInitializer {
     private static int commandReconnect(CommandContext<ServerCommandSource> context) {
         final ServerCommandSource source = context.getSource();
         bot.disconnect();
-        source.sendFeedback(new LiteralTextContent("Discord: Disconnected"), true);
+        source.sendFeedback(Text.of("Discord: Disconnected"), true);
         try {
             bot.connect(config.token);
-            source.sendFeedback(new LiteralTextContent("Discord: Connected"), true);
+            source.sendFeedback(Text.of("Discord: Connected"), true);
         } catch (LoginException | InterruptedException e) {
-            source.sendFeedback(new LiteralTextContent("Discord: Failed to connect"), true);
+            source.sendFeedback(Text.of("Discord: Failed to connect"), true);
         }
 
         return 0;
