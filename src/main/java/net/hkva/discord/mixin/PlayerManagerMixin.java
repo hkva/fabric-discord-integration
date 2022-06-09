@@ -1,14 +1,11 @@
 package net.hkva.discord.mixin;
 
-import net.hkva.discord.DiscordIntegrationMod;
 import net.hkva.discord.callback.ServerChatCallback;
 import net.minecraft.network.message.MessageSender;
 import net.minecraft.network.message.MessageType;
 import net.minecraft.network.message.SignedMessage;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.filter.FilteredMessage;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.registry.RegistryKey;
@@ -17,7 +14,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.UUID;
 import java.util.function.Function;
 
 @Mixin(PlayerManager.class)
