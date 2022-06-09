@@ -10,7 +10,9 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.hkva.discord.callback.DiscordChatCallback;
 import net.hkva.discord.callback.ServerChatCallback;
+import net.minecraft.network.message.MessageSender;
 import net.minecraft.network.message.MessageType;
+import net.minecraft.network.message.SignedMessage;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -35,6 +37,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.vdurmont.emoji.EmojiParser;
 
+import net.minecraft.util.registry.RegistryKey;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -61,6 +64,9 @@ public class DiscordIntegrationMod implements DedicatedServerModInitializer {
     // Player count
     public static int playerCount = -1;
 
+    // Sender object for relaying discord messages to game chat
+    public static MessageSender serverSender = null;
+
     //
     // Mod entry point
     //
@@ -80,6 +86,9 @@ public class DiscordIntegrationMod implements DedicatedServerModInitializer {
             LOGGER.warn("Config file doesn't exist, writing default");
             writeConfig();
         }
+
+        // Unique message sender
+        serverSender = new MessageSender(UUID.randomUUID(), Text.of("Server"), null);
 
         ServerLifecycleEvents.SERVER_STARTED.register(DiscordIntegrationMod::onServerStart);
         ServerLifecycleEvents.SERVER_STOPPED.register(DiscordIntegrationMod::onServerStop);
@@ -155,9 +164,9 @@ public class DiscordIntegrationMod implements DedicatedServerModInitializer {
     //
     // Called on server message
     //
-    private static void onServerChat(MinecraftServer server, Text text, MessageType type, UUID senderUUID) {
+    private static void onServerChat(MinecraftServer server, Text text, RegistryKey<MessageType> type, UUID senderUUID) {
         // Ignore feedback
-        if (type == MessageType.CHAT && senderUUID == Util.NIL_UUID) {
+        if (senderUUID == DiscordIntegrationMod.serverSender.uuid()) {
             return;
         }
 
@@ -249,7 +258,7 @@ public class DiscordIntegrationMod implements DedicatedServerModInitializer {
         text.append(EmojiParser.parseToAliases(message.getContentDisplay()));
 
         // Forward message to all clients
-        server.get().getPlayerManager().broadcast(text, MessageType.CHAT, Util.NIL_UUID);
+        server.get().getPlayerManager().broadcast(SignedMessage.of(text), DiscordIntegrationMod.serverSender, MessageType.SYSTEM);
     }
 
     //

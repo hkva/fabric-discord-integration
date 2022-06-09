@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.network.message.MessageType;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.text.Text;
+import net.minecraft.util.registry.RegistryKey;
 
 import java.util.UUID;
 
@@ -17,6 +18,6 @@ public interface ServerChatCallback {
                 }
             });
 
-    void dispatch(MinecraftServer server, Text text, MessageType type, UUID senderUUID);
+    void dispatch(MinecraftServer server, Text text, RegistryKey<MessageType> type, UUID senderUUID);
 
 }
