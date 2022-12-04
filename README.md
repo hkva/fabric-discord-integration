@@ -1,6 +1,6 @@
 # Fabric Discord Integration ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/chunkaligned/fabric-discord-integration/build?style=flat-square)
 
-![image](https://user-images.githubusercontent.com/91440203/172745735-47e3396e-e84c-42c5-a29e-d24a0d8db3e6.png)
+https://user-images.githubusercontent.com/91440203/205516260-348bb49f-b26f-40ab-b672-ce481cbd3942.mp4
 
 ## Notable features:
 * Scoreboard integration
