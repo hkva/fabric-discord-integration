@@ -10,7 +10,7 @@
 
 ## Building
 
-`./gradlew build`
+Install a Java 17 JDK and run `./gradlew build`
 
 ## Setting up a Discord bot
 1. Create a [Discord Bot Application](https://discord.com/developers/docs/getting-started) at the [Discord Developer Portal](https://discord.com/developers/applications)
