@@ -39,7 +39,7 @@ public class PlayersCommand {
                 e.appendDescription(String.format("...and %d more", s.getCurrentPlayerCount() - playersInList));
             }
             
-            context.getSource().getTextChannel().sendMessageEmbeds(e.build()).queue();
+            context.getSource().getChannel().sendMessageEmbeds(e.build()).queue();
         });
         return 0;
     }

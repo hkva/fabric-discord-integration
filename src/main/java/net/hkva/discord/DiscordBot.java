@@ -11,6 +11,7 @@ import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.hkva.discord.callback.DiscordChatCallback;
 
 //
@@ -26,6 +27,8 @@ public class DiscordBot extends ListenerAdapter {
     public void connect(final String token) throws LoginException, InterruptedException {
         final JDABuilder builder = JDABuilder.createDefault(token)
             .setStatus(OnlineStatus.ONLINE)
+            .enableIntents(GatewayIntent.MESSAGE_CONTENT)
+            .enableIntents(GatewayIntent.GUILD_MESSAGE_REACTIONS)
             .addEventListeners(this);
         connection = Optional.of(builder.build());
         connection.get().awaitReady();

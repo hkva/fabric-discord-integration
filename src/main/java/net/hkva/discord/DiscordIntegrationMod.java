@@ -1,9 +1,10 @@
 package net.hkva.discord;
 
-import net.dv8tion.jda.api.entities.Emote;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.channel.Channel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -152,10 +153,9 @@ public class DiscordIntegrationMod implements DedicatedServerModInitializer {
                 }
 
                 // Format guild emojis
-                for (Emote emote : channel.getGuild().getEmotes()) {
-                    final String emojiDisplay = String.format(":%s:", emote.getName());
-                    final String emojiFormatted = String.format("<%s%s>", emojiDisplay, emote.getId());
-
+                for (Emoji emoji : channel.getGuild().getEmojis()) {
+                    final String emojiDisplay = String.format(":%s:", emoji.getName());
+                    final String emojiFormatted = String.format("<:%s>", emoji.getAsReactionCode());
                     outgoing = outgoing.replaceAll(emojiDisplay, emojiFormatted);
                 }
 

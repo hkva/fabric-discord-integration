@@ -33,7 +33,7 @@ public class ScoreboardCommand {
                 e.appendDescription(String.format("%s\n", o.getName()));
             }
 
-            context.getSource().getTextChannel().sendMessageEmbeds(e.build()).queue();
+            context.getSource().getChannel().sendMessageEmbeds(e.build()).queue();
         });
         return 0;
     }
@@ -49,7 +49,7 @@ public class ScoreboardCommand {
                 e.setColor(Color.RED);
                 e.setTitle("Error");
                 e.setDescription(String.format("No scoreboard named \"%s\" exists", name));
-                context.getSource().getTextChannel().sendMessageEmbeds(e.build()).queue();
+                context.getSource().getChannel().sendMessageEmbeds(e.build()).queue();
                 return;
             }
 
@@ -66,7 +66,7 @@ public class ScoreboardCommand {
                 e.appendDescription(String.format("%s: %s\n", score.getPlayerName(), score.getScore()));
             }
 
-            context.getSource().getTextChannel().sendMessageEmbeds(e.build()).queue();
+            context.getSource().getChannel().sendMessageEmbeds(e.build()).queue();
         });
         return 0;
     }
