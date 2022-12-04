@@ -12,12 +12,13 @@ import net.hkva.discord.callback.DiscordChatCallback;
 import net.hkva.discord.callback.ServerMessageCallback;
 import net.hkva.discord.callback.ChatMessageCallback;
 import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.network.message.MessageSender;
+import net.minecraft.network.message.MessageSourceProfile;
 import net.minecraft.network.message.MessageType;
 import net.minecraft.network.message.SignedMessage;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.HoverEvent;
@@ -63,9 +64,6 @@ public class DiscordIntegrationMod implements DedicatedServerModInitializer {
     // Player count
     public static int playerCount = -1;
 
-    // Sender object for relaying discord messages to game chat
-    public static MessageSender serverSender = null;
-
     //
     // Mod entry point
     //
@@ -86,9 +84,6 @@ public class DiscordIntegrationMod implements DedicatedServerModInitializer {
             writeConfig();
         }
 
-        // Unique message sender
-        serverSender = new MessageSender(UUID.randomUUID(), Text.of("Server"), null);
-
         // Core server events
         ServerLifecycleEvents.SERVER_STARTED.register(DiscordIntegrationMod::onServerStart);
         ServerLifecycleEvents.SERVER_STOPPED.register(DiscordIntegrationMod::onServerStop);
@@ -96,7 +91,7 @@ public class DiscordIntegrationMod implements DedicatedServerModInitializer {
         // Command events
         CommandRegistrationCallback.EVENT.register(DiscordIntegrationMod::onRegisterCommands);
         // Game chat events
-        ChatMessageCallback.EVENT.register(DiscordIntegrationMod::onServerChat);
+        ChatMessageCallback.EVENT.register(DiscordIntegrationMod::onGameChat);
         ServerMessageCallback.EVENT.register(DiscordIntegrationMod::onServerMessage);
         // Discord chat events
         DiscordChatCallback.EVENT.register(DiscordIntegrationMod::onDiscordChat);
@@ -212,17 +207,12 @@ public class DiscordIntegrationMod implements DedicatedServerModInitializer {
     //
     // Called on game chat message
     //
-    private static void onServerChat(MinecraftServer server, Text text, MessageSender sender) {
-        // Ignore feedback
-        if (sender.uuid() == DiscordIntegrationMod.serverSender.uuid()) {
-            return;
-        }
-
+    private static void onGameChat(MinecraftServer server, Text text, ServerPlayerEntity sender) {
         // Format chat message
-        String formatted = config.chatMessageFormat.replaceAll("\\$NAME", sender.name().getString());
+        String formatted = config.chatMessageFormat.replaceAll("\\$NAME", sender.getName().getString());
         formatted = formatted.replaceAll("\\$MESSAGE", text.getString());
         // Relay
-        relayToDiscord(formatted);        
+        relayToDiscord(formatted);
     }
 
     //
@@ -288,7 +278,10 @@ public class DiscordIntegrationMod implements DedicatedServerModInitializer {
         }
 
         // Forward message to all clients
-        server.get().getPlayerManager().broadcast(SignedMessage.of(text), DiscordIntegrationMod.serverSender, MessageType.SYSTEM);
+        // Send to each client explicitly to prevent feedback through server console messages
+        for (ServerPlayerEntity player : server.get().getPlayerManager().getPlayerList()) {
+            player.sendMessage(text);
+        }
     }
 
     //

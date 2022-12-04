@@ -26,7 +26,7 @@ public class RconCommand {
                 context.getSource().addReaction("U+1F6AB").queue();
             } else {
                 // Send as the server
-                s.getCommandManager().execute(s.getCommandSource(), command);
+                s.getCommandManager().executeWithPrefix(s.getCommandSource(), command);
                 // :white_check_mark:
                 context.getSource().addReaction("U+2705").queue();
             }
