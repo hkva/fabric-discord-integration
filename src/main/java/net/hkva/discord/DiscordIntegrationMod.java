@@ -2,7 +2,6 @@ package net.hkva.discord;
 
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.entities.channel.Channel;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.fabricmc.api.DedicatedServerModInitializer;
@@ -13,9 +12,6 @@ import net.hkva.discord.callback.DiscordChatCallback;
 import net.hkva.discord.callback.ServerMessageCallback;
 import net.hkva.discord.callback.ChatMessageCallback;
 import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.network.message.MessageSourceProfile;
-import net.minecraft.network.message.MessageType;
-import net.minecraft.network.message.SignedMessage;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -29,7 +25,6 @@ import net.minecraft.util.Formatting;
 
 import java.io.IOException;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.function.Consumer;
 
 import javax.security.auth.login.LoginException;
