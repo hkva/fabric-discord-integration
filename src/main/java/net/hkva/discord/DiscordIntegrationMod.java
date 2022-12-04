@@ -253,9 +253,12 @@ public class DiscordIntegrationMod implements DedicatedServerModInitializer {
             return;
         }
         
-        // Build incoming message
-        String name = String.format("%s#%s", author.getName(), author.getDiscriminator());
-        String formatted = config.discordMessageFormat.replaceAll("\\$NAME", name);
+        // Format incoming message
+        String formatted = config.discordMessageFormat;
+        formatted = formatted.replaceAll("\\$NAME",     String.format("%s#%s", author.getName(), author.getDiscriminator()));
+        formatted = formatted.replaceAll("\\$USERNAME", author.getName());
+        formatted = formatted.replaceAll("\\$DISCRIM",  author.getDiscriminator());
+        formatted = formatted.replaceAll("\\$NICKNAME", message.getGuild().getMember(author).getEffectiveName());
         String content = EmojiParser.parseToAliases(message.getContentDisplay());
         // Pad extra space for attachment names if not already empty
         if (content.length() > 0) {
