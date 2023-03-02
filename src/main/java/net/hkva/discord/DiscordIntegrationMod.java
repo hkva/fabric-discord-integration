@@ -66,11 +66,8 @@ public class DiscordIntegrationMod implements DedicatedServerModInitializer {
     public void onInitializeServer() {
         if (configFile.exists()) {
             if (readConfig()) {
-                try {
-                    bot.connect(config.token);
+                if (tryReconnect()) {
                     bot.setStatus("Starting...");
-                } catch (LoginException | InterruptedException e) {
-                    LOGGER.warn("Failed to connect to Discord");
                 }
             } else {
                 LOGGER.warn("Config file is malformed. Aborting");
@@ -91,9 +88,26 @@ public class DiscordIntegrationMod implements DedicatedServerModInitializer {
         ServerMessageCallback.EVENT.register(DiscordIntegrationMod::onServerMessage);
         // Discord chat events
         DiscordChatCallback.EVENT.register(DiscordIntegrationMod::onDiscordChat);
-        
-        
-        
+
+    }
+
+    //
+    // Try to reconnect to Discord
+    //
+    public static boolean tryReconnect() {
+        bot.disconnect();
+        try {
+            bot.connect(config.token);
+        } catch (IllegalStateException e) {
+            LOGGER.warn("An illegal state exception was thrown while trying to connect to Discord. You likely forgot to enable the MESSAGE_CONTENT intent for your bot.");
+            LOGGER.warn("For more information, please see https://github.com/chunkaligned/fabric-discord-integration#setting-up-a-discord-bot");
+            return false;
+        } catch (Exception e) {
+            LOGGER.warn("An error occurred while trying to connect to Discord: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     //
@@ -336,10 +350,9 @@ public class DiscordIntegrationMod implements DedicatedServerModInitializer {
         final ServerCommandSource source = context.getSource();
         bot.disconnect();
         source.sendFeedback(Text.of("Discord: Disconnected"), true);
-        try {
-            bot.connect(config.token);
+        if (tryReconnect()) {
             source.sendFeedback(Text.of("Discord: Connected"), true);
-        } catch (LoginException | InterruptedException e) {
+        } else {
             source.sendFeedback(Text.of("Discord: Failed to connect"), true);
         }
 

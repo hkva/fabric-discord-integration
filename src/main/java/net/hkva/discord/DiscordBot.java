@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.exceptions.InvalidTokenException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.hkva.discord.callback.DiscordChatCallback;
@@ -24,7 +25,7 @@ public class DiscordBot extends ListenerAdapter {
     //
     // Connect to Discord
     //
-    public void connect(final String token) throws LoginException, InterruptedException {
+    public void connect(final String token) throws InterruptedException, InvalidTokenException {
         final JDABuilder builder = JDABuilder.createDefault(token)
             .setStatus(OnlineStatus.ONLINE)
             .enableIntents(GatewayIntent.MESSAGE_CONTENT)
