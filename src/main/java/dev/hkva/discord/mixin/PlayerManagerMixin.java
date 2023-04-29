@@ -1,7 +1,7 @@
-package net.hkva.discord.mixin;
+package dev.hkva.discord.mixin;
 
-import net.hkva.discord.callback.ChatMessageCallback;
-import net.hkva.discord.callback.ServerMessageCallback;
+import dev.hkva.discord.callback.ChatMessageCallback;
+import dev.hkva.discord.callback.ServerMessageCallback;
 import net.minecraft.network.message.MessageType;
 import net.minecraft.network.message.SignedMessage;
 import net.minecraft.server.MinecraftServer;
@@ -12,8 +12,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.function.Function;
 
 @Mixin(PlayerManager.class)
 public class PlayerManagerMixin {

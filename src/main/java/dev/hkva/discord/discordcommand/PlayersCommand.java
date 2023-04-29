@@ -1,11 +1,11 @@
-package net.hkva.discord.discordcommand;
+package dev.hkva.discord.discordcommand;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
-import net.hkva.discord.DiscordCommandManager;
-import net.hkva.discord.DiscordIntegrationMod;
+import dev.hkva.discord.DiscordCommandManager;
+import dev.hkva.discord.DiscordIntegrationMod;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ServerPlayerEntity;
 

@@ -1,4 +1,4 @@
-package net.hkva.discord;
+package dev.hkva.discord;
 
 import java.util.ArrayList;
 

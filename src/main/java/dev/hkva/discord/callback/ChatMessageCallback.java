@@ -1,4 +1,4 @@
-package net.hkva.discord.callback;
+package dev.hkva.discord.callback;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;

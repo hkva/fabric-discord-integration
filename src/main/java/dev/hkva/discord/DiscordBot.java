@@ -1,9 +1,7 @@
-package net.hkva.discord;
+package dev.hkva.discord;
 
 import java.util.Optional;
 import java.util.function.Consumer;
-
-import javax.security.auth.login.LoginException;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -13,7 +11,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.InvalidTokenException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
-import net.hkva.discord.callback.DiscordChatCallback;
+import dev.hkva.discord.callback.DiscordChatCallback;
 
 //
 // Represents a connection to Discord

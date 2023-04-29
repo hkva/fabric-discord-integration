@@ -1,4 +1,4 @@
-package net.hkva.discord;
+package dev.hkva.discord;
 
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
@@ -8,9 +8,9 @@ import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.hkva.discord.callback.DiscordChatCallback;
-import net.hkva.discord.callback.ServerMessageCallback;
-import net.hkva.discord.callback.ChatMessageCallback;
+import dev.hkva.discord.callback.DiscordChatCallback;
+import dev.hkva.discord.callback.ServerMessageCallback;
+import dev.hkva.discord.callback.ChatMessageCallback;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
@@ -26,8 +26,6 @@ import net.minecraft.util.Formatting;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.function.Consumer;
-
-import javax.security.auth.login.LoginException;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;

@@ -1,4 +1,4 @@
-package net.hkva.discord;
+package dev.hkva.discord;
 
 import java.io.File;
 import java.io.FileReader;
