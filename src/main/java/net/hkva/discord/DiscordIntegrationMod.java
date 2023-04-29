@@ -294,6 +294,9 @@ public class DiscordIntegrationMod implements DedicatedServerModInitializer {
         for (ServerPlayerEntity player : server.get().getPlayerManager().getPlayerList()) {
             player.sendMessage(text);
         }
+
+        // Forward message to server console as well
+        LogManager.getLogger("Minecraft").info(text.getString());
     }
 
     //
