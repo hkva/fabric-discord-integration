@@ -97,7 +97,7 @@ public class DiscordIntegrationMod implements DedicatedServerModInitializer {
         try {
             bot.connect(config.token);
         } catch (IllegalStateException e) {
-            LOGGER.warn("An illegal state exception was thrown while trying to connect to Discord. You likely forgot to enable the MESSAGE_CONTENT intent for your bot.");
+            LOGGER.warn("An illegal state exception was thrown while trying to connect to Discord. You likely forgot to enable either the \"guild members\" or \"message content\" intents.");
             LOGGER.warn("For more information, please see https://github.com/chunkaligned/fabric-discord-integration#setting-up-a-discord-bot");
             return false;
         } catch (Exception e) {

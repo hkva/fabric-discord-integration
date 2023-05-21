@@ -14,7 +14,7 @@ Install a Java 17 JDK and run `./gradlew build`
 
 ## Setting up a Discord bot
 1. Create a [Discord Bot Application](https://discord.com/developers/docs/getting-started) at the [Discord Developer Portal](https://discord.com/developers/applications)
-2. Enable the "message content" intent ([screenshot](https://user-images.githubusercontent.com/91440203/203864167-519d7fd3-25b8-4490-b633-253a287f360e.png))
+2. Enable the "server members" and "message content" gateway intents ([screenshot](https://github.com/chunkaligned/fabric-discord-integration/assets/91440203/8435a6c9-dc9c-4f62-a93d-6b8c7ce9982a))
 
 
 ## Installing
