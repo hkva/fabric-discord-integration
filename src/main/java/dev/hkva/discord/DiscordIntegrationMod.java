@@ -323,7 +323,7 @@ public class DiscordIntegrationMod implements DedicatedServerModInitializer {
             writeConfig();
         }
 
-        context.getSource().sendFeedback(Text.of(response), true);
+        context.getSource().sendMessage(Text.of(response));
         return 0;
     }
 
@@ -333,11 +333,11 @@ public class DiscordIntegrationMod implements DedicatedServerModInitializer {
     private static int commandStatus(CommandContext<ServerCommandSource> context) {
         final ServerCommandSource source = context.getSource();
         if (!bot.isConnected()) {
-            source.sendFeedback(Text.of("Discord: Not connected"), false);
+            source.sendMessage(Text.of("Discord: Not connected"));
         } else {
             bot.withConnection(c -> {
-                source.sendFeedback(Text.of("Discord: Connected"), false);
-                source.sendFeedback(Text.of("Status: " + c.getStatus()), false);
+                source.sendMessage(Text.of("Discord: Connected"));
+                source.sendMessage(Text.of("Status: " + c.getStatus()));
             });
         }
 
@@ -350,11 +350,11 @@ public class DiscordIntegrationMod implements DedicatedServerModInitializer {
     private static int commandReconnect(CommandContext<ServerCommandSource> context) {
         final ServerCommandSource source = context.getSource();
         bot.disconnect();
-        source.sendFeedback(Text.of("Discord: Disconnected"), true);
+        source.sendMessage(Text.of("Discord: Disconnected"));
         if (tryReconnect()) {
-            source.sendFeedback(Text.of("Discord: Connected"), true);
+            source.sendMessage(Text.of("Discord: Connected"));
         } else {
-            source.sendFeedback(Text.of("Discord: Failed to connect"), true);
+            source.sendMessage(Text.of("Discord: Failed to connect"));
         }
 
         return 0;
