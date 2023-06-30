@@ -19,7 +19,7 @@ public class ModConfig {
     public boolean disableMentions = true;
     
     // Discord message format
-    public String discordMessageFormat = "[$NAME] $MESSAGE";
+    public String discordMessageFormat = "[$USERNAME] $MESSAGE";
     
     // Game message format
     public String chatMessageFormat = "**<$NAME>** $MESSAGE";
