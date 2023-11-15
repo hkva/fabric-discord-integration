@@ -23,7 +23,7 @@ Install a Java 17 JDK and run `./gradlew build`
 
 [Download the latest version here](https://github.com/chunkaligned/fabric-discord-integration/releases)
 
-1. Install the on the dedicated server: [CurseForge](https://www.curseforge.com/minecraft/mc-mods/fabric-api/files), [Modrinth](https://modrinth.com/mod/fabric-api)
+1. Install the Fabric API on the dedicated server: [CurseForge](https://www.curseforge.com/minecraft/mc-mods/fabric-api/files), [Modrinth](https://modrinth.com/mod/fabric-api)
 2. Install `fabric-discord-integration-x.x.x.jar`
 3. Launch the server
 4. Configure `config/discord.json`
