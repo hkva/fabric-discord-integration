@@ -55,7 +55,7 @@ This project will eventually require the deployment of a bot to your DC server. 
 
 ## 2.1 Add Mod to Server
 
-1. Find the version you need and **download** to your server's `mods` folder [here]([Download the latest version here](https://github.com/chunkaligned/fabric-discord-integration/releases)).
+1. Find the version you need and **download** to your server's `mods` folder [here](https://github.com/chunkaligned/fabric-discord-integration/releases).
 2. **Launch** the server to initialize this mod, and then **shut down** the server.
 
 ## 2.2 Mod Configuration
