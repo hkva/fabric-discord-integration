@@ -2,6 +2,8 @@
 
 https://github.com/chunkaligned/fabric-discord-integration/assets/91440203/489ff3c2-df7d-4531-826b-7aa48ae57ef8
 
+[This mod is also available on Modrinth](https://modrinth.com/mod/fabric-discord-integration)
+
 ## Notable features:
 * Scoreboard integration
 * Attachment support
@@ -21,7 +23,7 @@ Install a Java 17 JDK and run `./gradlew build`
 
 [Download the latest version here](https://github.com/chunkaligned/fabric-discord-integration/releases)
 
-1. Install the [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api/files) on the dedicated server
+1. Install the on the dedicated server: [CurseForge](https://www.curseforge.com/minecraft/mc-mods/fabric-api/files), [Modrinth](https://modrinth.com/mod/fabric-api)
 2. Install `fabric-discord-integration-x.x.x.jar`
 3. Launch the server
 4. Configure `config/discord.json`
