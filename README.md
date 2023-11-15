@@ -1,6 +1,6 @@
 # Fabric Discord Integration [![build](https://github.com/chunkaligned/fabric-discord-integration/actions/workflows/build.yml/badge.svg)](https://github.com/chunkaligned/fabric-discord-integration/actions/workflows/build.yml)
 
-https://user-images.githubusercontent.com/91440203/205516260-348bb49f-b26f-40ab-b672-ce481cbd3942.mp4
+https://github.com/chunkaligned/fabric-discord-integration/assets/91440203/489ff3c2-df7d-4531-826b-7aa48ae57ef8
 
 ## Notable features:
 * Scoreboard integration
